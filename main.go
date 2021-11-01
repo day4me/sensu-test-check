@@ -62,6 +62,10 @@ func checkArgs(event *types.Event) (int, error) {
 }
 
 func executeCheck(event *types.Event) (int, error) {
-	log.Println("executing check with --example", plugin.Example)
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println(dir, plugin.Example)
 	return sensu.CheckStateOK, nil
 }
