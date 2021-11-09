@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/sensu-community/sensu-plugin-sdk/sensu"
@@ -37,6 +38,11 @@ var (
 	}
 )
 
+var urls = map[string]string{
+	"MainPage":  "http://geocitizen.link/citizen",
+	"LoginPage": "http://geocitizen.link/citizen/login",
+}
+
 func main() {
 	useStdin := false
 	fi, err := os.Stdin.Stat()
@@ -62,10 +68,18 @@ func checkArgs(event *types.Event) (int, error) {
 }
 
 func executeCheck(event *types.Event) (int, error) {
-	dir, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
+	for service, url := range urls {
+		resp, err := http.Get(url)
+		if err != nil {
+			log.Printf("%s: check ERROR: %s\n", service, err)
+			continue
+		}
+		resp.Body.Close()
+		if resp.StatusCode != 200 {
+			log.Printf("%s: status check ERROR: %d != 200\n", service, resp.StatusCode)
+			continue
+		}
+		log.Printf("%s: status OK", service)
 	}
-	log.Println(dir, plugin.Example)
 	return sensu.CheckStateOK, nil
 }
