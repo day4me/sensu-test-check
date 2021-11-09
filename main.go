@@ -72,12 +72,12 @@ func executeCheck(event *types.Event) (int, error) {
 		resp, err := http.Get(url)
 		if err != nil {
 			log.Printf("%s: check ERROR: %s\n", service, err)
-			continue
+			return sensu.CheckStateCritical, nil
 		}
 		resp.Body.Close()
 		if resp.StatusCode != 200 {
 			log.Printf("%s: status check ERROR: %d != 200\n", service, resp.StatusCode)
-			continue
+			return sensu.CheckStateCritical, nil
 		}
 		log.Printf("%s: status OK", service)
 	}
