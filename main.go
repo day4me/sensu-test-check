@@ -75,7 +75,7 @@ func executeCheck(event *types.Event) (int, error) {
 		}
 		resp.Body.Close()
 		if resp.StatusCode != 200 {
-			log.Printf("%s: status check ERROR: %d != 200\n", service, resp.StatusCode)
+			log.Printf("%s: status check ERROR: %d != 200\n Runbook:https://github.com/DevOpsAcademySS/Geocitizen/wiki/Geocitizen-blue-green-deployment-on-K8S\n", service, resp.StatusCode)
 			return sensu.CheckStateCritical, nil
 		}
 		log.Printf("%s: status OK", service)
