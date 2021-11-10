@@ -39,8 +39,7 @@ var (
 )
 
 var urls = map[string]string{
-	"MainPage":  "http://geocitizen.link:8080/citizen",
-	"LoginPage": "http://geocitizen.link:8080/citizen/#/auth",
+	"MainPage": "http://geocitizen.link:8080/citizen",
 }
 
 func main() {
